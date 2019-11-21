@@ -2,13 +2,13 @@ package com.demo.streams;
 
 import java.util.List;
 
-public class User {
+public class UserTest {
 
     private String name;
     private int age = 2;
     private List<String> phone;
 
-    public User(String name) {
+    public UserTest(String name) {
         this.name = name;
 
     }
@@ -35,7 +35,7 @@ public class User {
         this.phone = phone;
     }
 
-    public User(String name, int age, List<String> phone) {
+    public UserTest(String name, int age, List<String> phone) {
         this.name = name;
         this.age = age;
         this.phone = phone;

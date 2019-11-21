@@ -1,12 +1,12 @@
 package com.demo.streams;
 
-public class Employee {
+public class EmployeeTest {
 	
 	private int empId;
 	public int getEmpId() {
 		return empId;
 	}
-	public Employee(int empId, String empName, double empSalary) {
+	public EmployeeTest(int empId, String empName, double empSalary) {
 	
 		this.empId = empId;
 		this.empName = empName;

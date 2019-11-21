@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static junit.framework.TestCase.assertEquals;
 
 @RunWith(JUnit4.class)
-public class FilterExamples {
+public class FilterExamplesTest {
 
     @Test
     public void testFilter(){

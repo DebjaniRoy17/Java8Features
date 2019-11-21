@@ -1,13 +1,8 @@
 package com.demo.streams;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Optional;
@@ -20,32 +15,33 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.Test;
+import org.junit.internal.runners.JUnit4ClassRunner;
+import org.junit.runner.RunWith;
+import org.junit.runner.Runner;
 
-@SpringBootTest
-class StreamsApplicationTests {
+import static org.junit.Assert.*;
 
-	@Test
-	void contextLoads() {
-	}
+public class StreamsApplicationTests {
+
+
 	
-	private static Employee[] arrayOfEmps = {
-		    new Employee(1, "Jeff Bezos", 100000.0), 
-		    new Employee(2, "Bill Gates", 200000.0), 
-		    new Employee(3, "Mark Zuckerberg", 300000.0)
+	private static EmployeeTest[] arrayOfEmps = {
+		    new EmployeeTest(1, "Jeff Bezos", 100000.0),
+		    new EmployeeTest(2, "Bill Gates", 200000.0),
+		    new EmployeeTest(3, "Mark Zuckerberg", 300000.0)
 		};
-	private static List<Employee> empList = Arrays.asList(arrayOfEmps);
+	private static List<EmployeeTest> empList = Arrays.asList(arrayOfEmps);
 	
 	@Test
 	public void testStreamCreationOne() {
 		
-		Stream<Employee> empStream = empList.isEmpty() ? Stream.empty() : empList.stream();
+		Stream<EmployeeTest> empStream = empList.isEmpty() ? Stream.empty() : empList.stream();
 		assertEquals(3, empStream.count());
 	}
 	@Test
 	public void testStreamCreationPartOfArray() {
-		Stream<Employee> empStream =  Arrays.stream(arrayOfEmps,1,3);
+		Stream<EmployeeTest> empStream =  Arrays.stream(arrayOfEmps,1,3);
 		assertEquals(2, empStream.count());
 	}
 	@Test
@@ -56,7 +52,7 @@ class StreamsApplicationTests {
 	}
 	@Test
 	public void testStreamFilter() {
-		Employee emp = empList.stream().filter(name -> "Jeff Bezos".equals(name.getEmpName())).findAny().orElse(null);
+		EmployeeTest emp = empList.stream().filter(name -> "Jeff Bezos".equals(name.getEmpName())).findAny().orElse(null);
 		assertNotEquals("Bill Gates",emp.getEmpName());
 		assertEquals("Jeff Bezos", emp.getEmpName());
 
@@ -76,28 +72,28 @@ class StreamsApplicationTests {
 			    .collect(Collectors.toList());
 			Optional<String> anyElement = elements.stream().findAny();
 			Optional<String> firstElement = elements.stream().findFirst();
-			
-			assertThat(anyElement.equals("b"));
-			assertThat(firstElement.equals("a"));
+
+		assertEquals("b", anyElement.get());
+		assertEquals("b", firstElement.get());
 	}
 	@Test
 	public void testStreamCollectorsTwo() {
 		List<String> elements =
 				  Stream.of("a", "b", "c").collect(Collectors.toList());
 		
-		assertThat(elements.contains("b"));
+		assert(elements.contains("b"));
 	}
 	@Test
 	public void testStreamCollectorsThree() {
 		List<String> empCollection = 
-				  empList.stream().map(Employee::getEmpName).collect(Collectors.toList());
+				  empList.stream().map(EmployeeTest::getEmpName).collect(Collectors.toList());
 		
 		empCollection.forEach(System.out::println);
 	}
 	@Test
 	public void testStreamCollectorsFour() {
 		String empNamesInArrayFormat = 
-				  empList.stream().map(Employee::getEmpName).collect(Collectors.joining(", ", "[", "]"));
+				  empList.stream().map(EmployeeTest::getEmpName).collect(Collectors.joining(", ", "[", "]"));
 		
 		System.out.println(empNamesInArrayFormat);
 	}
@@ -128,19 +124,19 @@ class StreamsApplicationTests {
 	}
 	@Test
 	public void testStreamAverageDouble() {
-		double empSalary = empList.stream().collect(Collectors.averagingDouble(Employee::getEmpSalary));
+		double empSalary = empList.stream().collect(Collectors.averagingDouble(EmployeeTest::getEmpSalary));
 		
 		System.out.println(empSalary);
 	}
 	@Test
 	public void testStreamSummingDouble() {
-		double empSalary = empList.stream().collect(Collectors.summingDouble(Employee::getEmpSalary));
+		double empSalary = empList.stream().collect(Collectors.summingDouble(EmployeeTest::getEmpSalary));
 		
 		System.out.println(empSalary);
 	}
 	@Test
 	public void testStreamSummarizingDouble() {
-		DoubleSummaryStatistics empSalary = empList.stream().collect(Collectors.summarizingDouble(Employee::getEmpSalary));
+		DoubleSummaryStatistics empSalary = empList.stream().collect(Collectors.summarizingDouble(EmployeeTest::getEmpSalary));
 		
 		System.out.println(empSalary);
 	}
@@ -236,7 +232,7 @@ class StreamsApplicationTests {
 		
 		assertTrue(comfuture1.isDone());
 		assertTrue(comfuture2.isDone());
-		assertTrue(comfuture3.isDone());
+		assertFalse(comfuture3.isDone());
 		
 		CompletableFuture<Void> combined = CompletableFuture.allOf(comfuture1,comfuture2,comfuture3);
 		combined.get();
